@@ -9,7 +9,7 @@ MENU_PROMPT = """Choose an option by entering a number:
 """
 Tasks will be stored in a sql database in this format:
 id - also used as the number for selecting a task to delete / check off
-name / title - task name
+task - task
 completed - boolean (if the task is completed)
 
 displayed when listed like this:
@@ -18,16 +18,16 @@ displayed when listed like this:
 """
 
 
-def add_task():
+def add_task(task):
     pass
 
 def list_tasks():
     pass
 
-def complete_task():
+def complete_task(task_id):
     pass
 
-def delete_task():
+def delete_task(task_id):
     pass
 
 def main():
@@ -35,13 +35,18 @@ def main():
     choice = input(MENU_PROMPT)
     while choice != "5":
         if choice == "1":
-            add_task()
+            task = input("Enter the task: ")
+            add_task(task)
         elif choice == "2":
             list_tasks()
         elif choice == "3":
-            complete_task()
+            list_tasks()
+            task_id = input("Enter the task number to complete: ") # TODO: convert to int with error handling
+            complete_task(task_id)
         elif choice == "4":
-            delete_task()
+            list_tasks()
+            task_id = input("Enter the task number to complete: ")  # TODO: convert to int with error handling
+            delete_task(task_id)
         else:
             print("Invalid option.")
         choice = input(MENU_PROMPT)
