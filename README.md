@@ -1,5 +1,7 @@
 # To Do App
 
+This project was made during the Summer of Making 2025
+
 ## Usage
 1. Clone this repo to your machine or download the zip file using the green clone button.
 2. Open the terminal / command prompt and navigate to the project folder.
