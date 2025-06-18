@@ -31,14 +31,31 @@ def list_tasks(cursor):
         status = "[X]" if task[2] else "[ ]"
         print(f"\n\n{task[0]}. {status} {task[1]}\n")
 
-def complete_task(cursor, task_id):
+def complete_task(cursor, task_id_str):
+    try:
+        task_id = int(task_id_str)
+    except ValueError:
+        print("\nInvalid number. Please enter a valid integer.\n")
+        return
+    task = cursor.execute("SELECT task FROM tasks WHERE id = ?", (task_id,)).fetchone()
+    if not task:
+        print("\nTask not found.\n")
+        return
     cursor.execute("UPDATE tasks SET completed = 1 WHERE id = ?", (task_id,))
     cursor.connection.commit()
     list_tasks(cursor)
 
-def delete_task(cursor, task_id):
-    task = cursor.execute("SELECT task FROM tasks WHERE id = ?", (task_id,)).fetchone()[0]
-    confirm = input(f"Are you sure you want to delete {task} task? (y/n): ")
+def delete_task(cursor, task_id_str):
+    try:
+        task_id = int(task_id_str)
+    except ValueError:
+        print("\nInvalid number. Please enter a valid integer.\n")
+        return
+    task = cursor.execute("SELECT task FROM tasks WHERE id = ?", (task_id,)).fetchone()
+    if not task:
+        print("\nTask not found.\n")
+        return
+    confirm = input(f"Are you sure you want to delete {task[0]} task? (y/n): ")
     if confirm.lower() == "y":
         cursor.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
         cursor.connection.commit()
@@ -58,11 +75,11 @@ def main():
             list_tasks(cursor)
         elif choice == "3":
             list_tasks(cursor)
-            task_id = input("Enter the task number to complete: ") # TODO: convert to int with error handling
+            task_id = input("Enter the task number to complete: ")
             complete_task(cursor, task_id)
         elif choice == "4":
             list_tasks(cursor)
-            task_id = int(input("Enter the task number to delete: "))  # TODO: convert to int with error handling
+            task_id = input("Enter the task number to delete: ")
             delete_task(cursor, task_id)
         else:
             print("Invalid option.")
