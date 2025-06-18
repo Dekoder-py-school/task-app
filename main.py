@@ -6,6 +6,18 @@ MENU_PROMPT = """Choose an option by entering a number:
 5. Exit
 >>> """
 
+"""
+Tasks will be stored in a sql database in this format:
+id - also used as the number for selecting a task to delete / check off
+name / title - task name
+completed - boolean (if the task is completed)
+
+displayed when listed like this:
+1. [X] Walk the dog
+2. [ ] Buy dog food
+"""
+
+
 def add_task():
     pass
 
