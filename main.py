@@ -23,6 +23,7 @@ displayed when listed like this:
 def add_task(cursor, task):
     cursor.execute("INSERT INTO tasks (task) VALUES (?)", (task,))
     cursor.connection.commit()
+    list_tasks(cursor)
 
 def list_tasks(cursor):
     tasks = cursor.execute("SELECT id, task, completed FROM tasks").fetchall()
@@ -33,6 +34,7 @@ def list_tasks(cursor):
 def complete_task(cursor, task_id):
     cursor.execute("UPDATE tasks SET completed = 1 WHERE id = ?", (task_id,))
     cursor.connection.commit()
+    list_tasks(cursor)
 
 def delete_task(cursor, task_id):
     task = cursor.execute("SELECT task FROM tasks WHERE id = ?", (task_id,)).fetchone()[0]
@@ -40,6 +42,7 @@ def delete_task(cursor, task_id):
     if confirm.lower() == "y":
         cursor.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
         cursor.connection.commit()
+        list_tasks(cursor)
 
 def main():
     con = sqlite3.connect("tasks.sqlite")
@@ -64,6 +67,7 @@ def main():
         else:
             print("Invalid option.")
         choice = input(MENU_PROMPT)
+    con.close()
     print("Thank you for using my to do app!")
 
 if __name__ == "__main__":
