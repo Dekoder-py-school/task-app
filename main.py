@@ -1,4 +1,5 @@
 import sqlite3
+from rich import print
 
 MENU_PROMPT = """Choose an option by entering a number:
 1. Add a new task
