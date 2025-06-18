@@ -7,6 +7,6 @@
 4. Run python3 main.py
 
 ## AI DISCLAIMER
-AI (GitHub Copilot) was used to help write the readme and the menu prompt. It also helped with some debugging and with the displaying of the checkboxes ( [ ] or [X])
+AI (GitHub Copilot) was used to help write the readme, some commit messages, and the menu prompt. It also helped with some debugging and with the displaying of the checkboxes ( [ ] or [X])
 
 The rest of the code was written by me, including the logic for adding, removing, and displaying tasks, as well as accessing the database.
