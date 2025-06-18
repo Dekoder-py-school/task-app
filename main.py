@@ -28,13 +28,18 @@ def list_tasks(cursor):
     tasks = cursor.execute("SELECT id, task, completed FROM tasks").fetchall()
     for task in tasks:
         status = "[X]" if task[2] else "[ ]"
-        print(f"{task[0]}. {status} {task[1]}")
+        print(f"\n\n{task[0]}. {status} {task[1]}\n")
 
 def complete_task(cursor, task_id):
-    pass
+    cursor.execute("UPDATE tasks SET completed = 1 WHERE id = ?", (task_id,))
+    cursor.connection.commit()
 
 def delete_task(cursor, task_id):
-    pass
+    task = cursor.execute("SELECT task FROM tasks WHERE id = ?", (task_id,)).fetchone()[0]
+    confirm = input(f"Are you sure you want to delete {task} task? (y/n): ")
+    if confirm.lower() == "y":
+        cursor.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
+        cursor.connection.commit()
 
 def main():
     con = sqlite3.connect("tasks.sqlite")
@@ -54,7 +59,7 @@ def main():
             complete_task(cursor, task_id)
         elif choice == "4":
             list_tasks(cursor)
-            task_id = input("Enter the task number to complete: ")  # TODO: convert to int with error handling
+            task_id = int(input("Enter the task number to delete: "))  # TODO: convert to int with error handling
             delete_task(cursor, task_id)
         else:
             print("Invalid option.")
