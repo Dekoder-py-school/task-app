@@ -36,11 +36,11 @@ def complete_task(cursor, task_id_str):
     try:
         task_id = int(task_id_str)
     except ValueError:
-        print("\nInvalid number. Please enter a valid integer.\n")
+        print("\n[red]Invalid number. Please enter a valid integer.[/red]\n")
         return
     task = cursor.execute("SELECT task FROM tasks WHERE id = ?", (task_id,)).fetchone()
     if not task:
-        print("\nTask not found.\n")
+        print("\n[yellow]Task not found.[/yellow]\n")
         return
     cursor.execute("UPDATE tasks SET completed = 1 WHERE id = ?", (task_id,))
     cursor.connection.commit()
@@ -50,11 +50,11 @@ def delete_task(cursor, task_id_str):
     try:
         task_id = int(task_id_str)
     except ValueError:
-        print("\nInvalid number. Please enter a valid integer.\n")
+        print("\n[red]Invalid number. Please enter a valid integer.[/red]\n")
         return
     task = cursor.execute("SELECT task FROM tasks WHERE id = ?", (task_id,)).fetchone()
     if not task:
-        print("\nTask not found.\n")
+        print("\n[yellow]Task not found.[/yellow]\n")
         return
     confirm = input(f"Are you sure you want to delete {task[0]} task? (y/n): ")
     if confirm.lower() == "y":
