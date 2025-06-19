@@ -1,4 +1,6 @@
 import sqlite3
+import time
+
 try:
     from rich import print
 except ImportError:
@@ -92,6 +94,7 @@ def main():
             delete_task(cursor, task_id)
         else:
             print("Invalid option.")
+        time.sleep(2.5)
         print(MENU_PROMPT)
         choice = input(">>> ")
     con.close()
