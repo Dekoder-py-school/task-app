@@ -5,7 +5,7 @@ import argparse
 try:
     from rich import print
 except ImportError:
-    print("ERROR: RICH LIBRARY NOT FOUND.\n\nPlease install the dependancies with pip.\n  pip install -r requirements.txt")
+    print("ERROR: RICH LIBRARY NOT FOUND.\n\nPlease install the dependencies with pip.\n  pip install -r requirements.txt")
     quit()
 
 parser = argparse.ArgumentParser(description="Simple To Do List CLI App")
