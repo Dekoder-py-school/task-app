@@ -21,6 +21,12 @@ To run with a custom task list, run:
   # for example: python3 main.py --list work_project
 ```
 
+## Help
+To see the help menu, run:
+```bash
+  python3 main.py --help
+```
+
 ## AI DISCLAIMER
 AI (GitHub Copilot) was used to help write the readme, some commit messages, and the menu prompt. It also helped with some debugging and with the displaying of the checkboxes ( [ ] or [X])
 
