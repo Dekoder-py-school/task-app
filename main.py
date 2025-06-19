@@ -62,6 +62,7 @@ def delete_task(cursor, task_id_str):
     if not task:
         print("\n[yellow]Task not found.[/yellow]\n")
         return
+    print("\n[red]WARNING: THIS CANNOT BE UNDONE![/red]")
     confirm = input(f"Are you sure you want to delete {task[0]} task? (y/n): ")
     if confirm.lower() == "y":
         cursor.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
