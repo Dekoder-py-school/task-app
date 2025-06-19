@@ -14,7 +14,8 @@ args = parser.parse_args()
 database = args.list + ".sqlite"
 database = database.lower().strip()
 
-MENU_PROMPT = """Choose an option by entering a number:
+MENU_PROMPT = f"""Current list: [bold purple]{args.list.title()}[/bold purple]
+Choose an option by entering a number:
 1. [magenta]Add a new task[/magenta]
 2. [blue]List all tasks[/blue]
 3. [green]Check a task off[/green]
@@ -46,11 +47,13 @@ def list_tasks(cursor):
         for task in tasks:
             status = "[green][X][/green]" if task[2] else "[ ]"
             print(f"\n\n{task[0]}. {status} {task[1]}\n")
-    else:
-        print("[bold green]All tasks completed! Well done![/bold green]")
+    elif len(tasks):
+        print("[bold green]All tasks complete.[/bold green]")
         for task in tasks:
             status = "[green][X][/green]" if task[2] else "[ ]"
             print(f"\n\n{task[0]}. {status} {task[1]}\n")
+    else:
+        print("\n[bold yellow]No tasks found.[/bold yellow]\n")
 
 
 def complete_task(cursor, task_id_str):
@@ -78,11 +81,18 @@ def delete_task(cursor, task_id_str):
         print("\n[yellow]Task not found.[/yellow]\n")
         return
     print("\n[red]WARNING: THIS CANNOT BE UNDONE![/red]")
-    confirm = input(f"Are you sure you want to delete {task[0]} task? (y/n): ")
-    if confirm.lower() == "y":
-        cursor.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
-        cursor.connection.commit()
-        list_tasks(cursor)
+    confirm = input(f"Are you sure you want to delete {task[0]} task? (y/n): ").lower().strip()
+    if confirm in ["y", "n"]:
+        if confirm == "y":
+            cursor.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
+            cursor.connection.commit()
+            print(f"\n[red]Task '{task[0]}' deleted successfully![/red]\n")
+            list_tasks(cursor)
+        else:
+            print("\n[yellow]Task deletion cancelled.[/yellow]\n")
+    else:
+        print("\n[red]Invalid input. Please enter 'y' or 'n'.[/red]\n")
+        delete_task(cursor, task_id_str)
 
 def main():
     con = sqlite3.connect(database)
@@ -90,7 +100,7 @@ def main():
     cursor.execute("CREATE TABLE IF NOT EXISTS tasks(id INTEGER PRIMARY KEY, task TEXT, completed BOOLEAN DEFAULT 0)")
     print("Welcome to the Dekoder-py-school to do app!")
     print(MENU_PROMPT)
-    choice = input(">>> ")
+    choice = input(">>> ").strip()
     while choice != "5":
         if choice == "1":
             task = input("Enter the task: ")
@@ -114,7 +124,7 @@ def main():
             print("Invalid option.")
         time.sleep(2)
         print(MENU_PROMPT)
-        choice = input(">>> ")
+        choice = input(">>> ").strip()
     con.close()
     print("Thank you for using my to do app!")
 
