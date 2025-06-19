@@ -1,5 +1,11 @@
 import sqlite3
-from rich import print
+try:
+    from rich import print
+except ImportError:
+    print("ERROR: RICH LIBRARY NOT FOUND.\n\nPlease install the dependancies with pip.\n  pip install -r requirements.txt")
+    quit()
+
+
 
 MENU_PROMPT = """Choose an option by entering a number:
 1. Add a new task
@@ -29,7 +35,7 @@ def add_task(cursor, task):
 def list_tasks(cursor):
     tasks = cursor.execute("SELECT id, task, completed FROM tasks").fetchall()
     for task in tasks:
-        status = "[X]" if task[2] else "[ ]"
+        status = "[green][X][/green]" if task[2] else "[ ]"
         print(f"\n\n{task[0]}. {status} {task[1]}\n")
 
 def complete_task(cursor, task_id_str):
