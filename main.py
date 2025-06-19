@@ -12,6 +12,7 @@ parser = argparse.ArgumentParser(description="Simple To Do List CLI App")
 parser.add_argument('--list', '-l', default='tasks', help='Name of the task list (default: tasks)')
 args = parser.parse_args()
 database = args.list + ".sqlite"
+database = database.lower().strip()
 
 MENU_PROMPT = """Choose an option by entering a number:
 1. [magenta]Add a new task[/magenta]
