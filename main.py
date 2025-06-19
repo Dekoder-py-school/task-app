@@ -107,7 +107,7 @@ def main():
             delete_task(cursor, task_id)
         else:
             print("Invalid option.")
-        time.sleep(2.5)
+        time.sleep(2)
         print(MENU_PROMPT)
         choice = input(">>> ")
     con.close()
