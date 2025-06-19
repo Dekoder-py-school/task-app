@@ -1,5 +1,6 @@
 import sqlite3
 import time
+import argparse
 
 try:
     from rich import print
@@ -7,7 +8,10 @@ except ImportError:
     print("ERROR: RICH LIBRARY NOT FOUND.\n\nPlease install the dependancies with pip.\n  pip install -r requirements.txt")
     quit()
 
-
+parser = argparse.ArgumentParser(description="Simple To Do List CLI App")
+parser.add_argument('--list', '-l', default='tasks', help='Name of the task list (default: tasks)')
+args = parser.parse_args()
+database = args.list + ".sqlite"
 
 MENU_PROMPT = """Choose an option by entering a number:
 1. [magenta]Add a new task[/magenta]
@@ -80,7 +84,7 @@ def delete_task(cursor, task_id_str):
         list_tasks(cursor)
 
 def main():
-    con = sqlite3.connect("tasks.sqlite")
+    con = sqlite3.connect(database)
     cursor = con.cursor()
     cursor.execute("CREATE TABLE IF NOT EXISTS tasks(id INTEGER PRIMARY KEY, task TEXT, completed BOOLEAN DEFAULT 0)")
     print("Welcome to the Dekoder-py-school to do app!")
