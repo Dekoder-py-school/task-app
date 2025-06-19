@@ -117,9 +117,12 @@ def main():
             else:
                 print("\n[bold green]All tasks are already completed![/bold green]\n")
         elif choice == "4":
-            list_tasks(cursor)
-            task_id = input("Enter the task number to delete: ")
-            delete_task(cursor, task_id)
+            if not cursor.execute("SELECT * FROM tasks").fetchall():
+                print("\n[bold yellow]No tasks to delete.[/bold yellow]\n")
+            else:
+                list_tasks(cursor)
+                task_id = input("Enter the task number to delete: ")
+                delete_task(cursor, task_id)
         else:
             print("Invalid option.")
         time.sleep(2)
