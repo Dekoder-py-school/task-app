@@ -36,9 +36,17 @@ def add_task(cursor, task):
 
 def list_tasks(cursor):
     tasks = cursor.execute("SELECT id, task, completed FROM tasks").fetchall()
-    for task in tasks:
-        status = "[green][X][/green]" if task[2] else "[ ]"
-        print(f"\n\n{task[0]}. {status} {task[1]}\n")
+    all_complete = all(task[2] for task in tasks)
+    if not all_complete:
+        for task in tasks:
+            status = "[green][X][/green]" if task[2] else "[ ]"
+            print(f"\n\n{task[0]}. {status} {task[1]}\n")
+    else:
+        print("[bold green]All tasks completed! Well done![/bold green]")
+        for task in tasks:
+            status = "[green][X][/green]" if task[2] else "[ ]"
+            print(f"\n\n{task[0]}. {status} {task[1]}\n")
+
 
 def complete_task(cursor, task_id_str):
     try:
@@ -85,9 +93,14 @@ def main():
         elif choice == "2":
             list_tasks(cursor)
         elif choice == "3":
-            list_tasks(cursor)
-            task_id = input("Enter the task number to complete: ")
-            complete_task(cursor, task_id)
+            tasks = cursor.execute("SELECT * FROM tasks").fetchall()
+            all_complete = all(task[2] for task in tasks)
+            if not all_complete:
+                list_tasks(cursor)
+                task_id = input("Enter the task number to complete: ")
+                complete_task(cursor, task_id)
+            else:
+                print("\n[bold green]All tasks are already completed![/bold green]\n")
         elif choice == "4":
             list_tasks(cursor)
             task_id = input("Enter the task number to delete: ")
